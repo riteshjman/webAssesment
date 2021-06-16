@@ -61,15 +61,7 @@ function loadJSON(){
         alert(`User live server or local server`);
     })
 }
-function test()
-{
-    document.query("add-to-cart-btn").onclick = function() {
-        //disable
-        this.disabled = true;
-    
-        //do some validation stuff
-    }
-}
+
 function purchaseProduct(e){
     if(e.target.classList.contains('add-to-cart-btn')){
         let product = e.target.parentElement.parentElement;
