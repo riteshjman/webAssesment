@@ -39,7 +39,7 @@ function loadJSON(){
                 <div class = "product-item">
                     <div class = "product-img">
                         <img src = "${product.filename}" alt = "product image" width="${product.width}" height="${product.width}">
-                        <button type = "button" onclick="test()" class = "add-to-cart-btn">
+                        <button type = "button"  class = "add-to-cart-btn">
                             <i class = "fas fa-shopping-cart"></i>Add To Cart
                         </button>
                     </div>
@@ -87,9 +87,17 @@ function getProductInfo(product){
         stock: product.querySelector('.product-price').textContent
     }
     cartItemID++;
-  
-    addToCartList(productInfo);
-    saveProductInStorage(productInfo);
+    let Product = JSON.parse(localStorage.getItem('products'));
+     let Available=Product.find(prod => {    
+      return prod.name.toString() === product.querySelector('.product-name').textContent.toString();
+     }) 
+    if(Available===undefined) {
+       addToCartList(productInfo);
+       saveProductInStorage(productInfo);   
+    }
+    else 
+      alert('This Product is Added Already!') 
+      
 }
 
 function addToCartList(product){
@@ -109,18 +117,17 @@ function addToCartList(product){
         </button>
 
 
-        <div class="col-6">
-        <ul class="pagination justify-content-end set_quantity">
-        <li class="page-item">
-        <button class="page-link " onclick="decreaseNumber('textbox','itemval')">
-        <i class="fas fa-minus"></i> </button>
-        </li>
-        <li class="page-item"><input type="text" name="" class="page-link" value="0" id="textbox" >
-        </li>
-        <li class="page-item">
-        <button class="page-link" onclick="increaseNumber('textbox','itemval')"> <i class="fas fa-plus"></i></button>
-        </li>
-        </ul>
+       <div class="col-6">
+      
+        
+        <button class="page-link " onclick="decreaseNumber('textbox','itemval1')"><h5>minus</h5> </button>
+    
+       <input type="text" name="" class="page-link" value="0" id="textbox" >
+      
+        
+        <button class="page-link" onclick="increaseNumber('textbox','itemval1')"><h5>plus</h5></button>
+      
+      
         </div>
     `;
     cartList.appendChild(cartItem);
@@ -187,8 +194,6 @@ function deleteProduct(e){
 const decreaseNumber = (incdec, itemprice) => {
     var itemval = document.getElementById(incdec);
     var itemprice = document.getElementById(itemprice);
-    console.log( itemprice.innerHTML);
-    // console.log(itemval.value);
     if(itemval.value <= 0){
     itemval.value = 0;
     alert('Negative quantity not allowed');
@@ -196,24 +201,23 @@ const decreaseNumber = (incdec, itemprice) => {
     itemval.value = parseInt(itemval.value) - 1;
     itemval.style.background = '#fff';
     itemval.style.color = '#000';
-    itemprice.innerHTML  = parseInt(itemprice.innerHTML) - 15;
-    product_total_amt.innerHTML  = parseInt(product_total_amt.innerHTML) - 15;
+    itemprice.innerHTML  = parseInt(itemprice.innerHTML) - price;
+    product_total_amt.innerHTML  = parseInt(product_total_amt.innerHTML) - price;
     total_cart_amt.innerHTML  = parseInt(product_total_amt.innerHTML) + parseInt(shipping_charge.innerHTML);
     }
     }
     const increaseNumber = (incdec, itemprice) => {
     var itemval = document.getElementById(incdec);
     var itemprice = document.getElementById(itemprice);
-    // console.log(itemval.value);
-    if(itemval.value >= 5){
-    itemval.value = 5;
-    alert('max 5 allowed');
+    if(itemval.value >= 4){
+    itemval.value = 4;
+    alert('max 4 allowed');
     itemval.style.background = 'red';
     itemval.style.color = '#fff';
     }else{
     itemval.value = parseInt(itemval.value) + 1;
-    itemprice.innerHTML  = parseInt(itemprice.innerHTML ) + 15;
-    product_total_amt.innerHTML  = parseInt(product_total_amt.innerHTML) + 15;
+    itemprice.innerHTML  = parseInt(itemprice.innerHTML ) + price;
+    product_total_amt.innerHTML  = parseInt(product_total_amt.innerHTML) + price;
     total_cart_amt.innerHTML  = parseInt(product_total_amt.innerHTML) + parseInt(shipping_charge.innerHTML);
     }
     }
